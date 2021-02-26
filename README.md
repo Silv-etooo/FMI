@@ -1,4 +1,4 @@
-# FMI
+# ФМИ (FMI)
 from uni
 
 1. First year  
