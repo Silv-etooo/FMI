@@ -1,0 +1,319 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<script src="three.min.js"></script>
+		<script src="mannequin.js"></script>
+		<style>
+			body {color: rgb(170, 134, 134); text-shadow: 0 0 4px gray; font-family: Calibri;}
+			h1   {position: fixed; z-index: 10; top: 0; left: 0; text-align: center; width: 100%;}
+			div  {position: fixed; z-index: 10; bottom: 1em; left: 1em; font-size: 1.5em; font-style: italic;}
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+
+	<body>
+		<!-- Сложете реално заглавие -->
+		<h1>The Мatrix</h1>  
+		
+		<!-- Сложете описание на сцената (опитайте с рима) -->
+		<div>
+			Матрицата направих <br>
+			И като за без бюджет  <br>
+			доста добре се справих <br>
+			
+		</div>
+		
+		<script>
+
+			createScene(); // инициализиране на сцената
+
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+			scene.background = new THREE.Color( 'skyblue' );
+			var aspect = window.innerWidth/window.innerHeight;
+			var camera = new THREE.PerspectiveCamera( 50, aspect );
+			camera.position.set( 150, 90, 50 );
+			camera.lookAt( new THREE.Vector3());
+			//camera.position.set( 0, 2, 0 );
+			//camera.lookAt(0, 1, -100);
+
+
+
+
+			// човечетата и статичните елементи по позите
+
+	//SMITH	
+			smith = new Male();
+			smith.position.z = 100;
+			A = {"version":6,"data":[3.8,[0,90,0],[1.7,28.5,-2.5],[-0.4,-17.7,4.6],[6,0,-8.3],[0.5],[-6,-6,-9.7],[-2.4,0.8,10.1],[9.8],[6,6,-0.6],[7,-0.6,-5],[15],[-15,0,0],[10,10],[-7,0.6,-5],[13.3],[15,0,0],[10,10]]};
+			smith.postureString = JSON.stringify(A);
+			smith.turn = 90;
+			//color
+			smith.r_elbow.recolor( 'black' );smith.l_elbow.recolor( 'black' );
+			smith.r_arm.recolor( 'black' );smith.l_arm.recolor( 'black' );
+			smith.torso.recolor( 'white' );smith.pelvis.recolor( 'black' );
+			smith.r_leg.recolor( 'black' );smith.l_leg.recolor( 'black' );
+			smith.r_knee.recolor( 'black' );smith.l_knee.recolor( 'black' );
+
+	//NEO
+			neo = new Male();
+			neo.position.z = -100;
+			B = {"version":6,"data":[0,[0,-90,0],[-0.6,3.5,-2],[0,0,5],[11.9,0.4,10.2],[24.8],[-6,-6,-17.2],[-10.6,-0.6,7.1],[20],[6,6,-17.6],[102.4,-71.6,66.3],[89.7],[-15.5,0,0],[44.9,10],[-17.8,7,-0.5],[34.2],[15,0,0],[10,10]]};
+			neo.postureString = JSON.stringify(B);
+			//neo.turn = 0;
+		//color
+			neo.r_elbow.recolor( 'black' );neo.l_elbow.recolor( 'black' );
+			neo.r_arm.recolor( 'black' );neo.l_arm.recolor( 'black' );
+			neo.torso.recolor( 'black' );neo.pelvis.recolor( 'black' );
+			neo.r_leg.recolor( 'black' );neo.l_leg.recolor( 'black' );
+			neo.r_knee.recolor( 'black' );neo.l_knee.recolor( 'black' );
+			/*neo.r_ankle.recolor( 'black' );neo.l_ankle.recolor( 'black' );
+			*/
+	//TRINITY
+			trinity = new Female();
+			trinity.position.set(-80,0,-200);
+			trinity.turn = 0;
+			//color
+			trinity.torso.recolor( 'black' );trinity.pelvis.recolor( 'black' );
+			trinity.r_leg.recolor( 'black' );trinity.l_leg.recolor( 'black' );
+			trinity.r_knee.recolor( 'black' );trinity.l_knee.recolor( 'black' );
+
+			
+	//bullets
+			var bullet = new THREE.MeshPhongMaterial();
+			var geometry1 = new THREE.BoxGeometry( 3, 3, 3 );
+			var bullet1 = new THREE.Mesh( geometry1, bullet );
+			
+
+
+	//animation	
+
+			function smithShoots(sec, scene) // 0 - 4
+			{
+				//initializing
+				trinity.position.set(-80,0,-200);
+				C = {"version":6,"data":[3.8,[0,0,0],[1.7,28.5,-2.5],[-0.4,-17.7,4.6],[6,0,-8.3],[0.5],[-6,-6,-9.7],[-2.4,0.8,10.1],[9.8],[6,6,-0.6],[7,-0.6,-5],[15],[-15,0,0],[10,10],[-7,0.6,-5],[13.3],[15,0,0],[10,10]]};
+				trinity.postureString = JSON.stringify(C);
+
+				neo.position.z = -100;
+				B = {"version":6,"data":[0,[0,-90,0],[-0.6,3.5,-2],[0,0,5],[11.9,0.4,10.2],[24.8],[-6,-6,-17.2],[-10.6,-0.6,7.1],[20],[6,6,-17.6],[102.4,-71.6,66.3],[89.7],[-15.5,0,0],[44.9,10],[-17.8,7,-0.5],[34.2],[15,0,0],[10,10]]};
+				neo.postureString = JSON.stringify(B);
+
+				smith.position.set(0,0,100);
+				start = {"version":6,"data":[3.8,[0,90,0],[1.7,28.5,-2.5],[-0.4,-17.7,4.6],[6,0,-8.3],[0.5],[-6,-6,-9.7],[-2.4,0.8,10.1],[9.8],[6,6,-0.6],[7,-0.6,-5],[15],[-15,0,0],[10,10],[-7,0.6,-5],[13.3],[15,0,0],[10,10]]};
+				//end of initializing
+
+
+		//фигури		
+				//smith gets gun 0 - 1
+				getGun = {"version":6,"data":[3.8,[0,90,0],[1,27.5,-2.3],[-1.2,-11.9,3.7],[5,8.3,-11.7],[-4.3],[-6,-6,-4.5],[-7,6.2,10.3],[11.3],[6,6,-0.6],[7,-0.6,-5],[15],[-15,0,0],[10,10],[-55.5,79.8,60.1],[51.9],[-28.2,0,0],[30,8.7]]};
+				if (sec > 0 && sec < 1){
+					smith.posture = Mannequin.blend(start, getGun, sec);
+				}
+				
+				//smith shoots 1 - 2
+				shoots = {"version":6,"data":[3.8,[0,90,0],[0,62.4,-1.9],[-0.1,-30.7,3.3],[6,0,-10],[-7.6],[-6,-6,-0.6],[-6,0,19.3],[18.2],[6,6,-0.6],[7,-0.6,-8.4],[42.3],[-15,0,0],[10,10],[4.9,-59.6,83.4],[18.7],[10.3,0,0],[37,121.1]]};
+				if (sec > 1 && sec < 2){
+					smith.posture = Mannequin.blend(getGun,shoots, sec-1);
+				}
+
+		//камера		
+				//camera 2 - look at gun
+
+				//start
+				//camera.position.set( 0, 20, 0 );
+				//end 
+				//camera.position.set( 0, 20, 60 );
+
+				if (sec > 0 && sec < 2){
+					camera.position.set( 0, 20, sec*30 );
+				}
+				else if (sec > 2 && sec < 4){
+					camera.position.set( 0, 20, 60 );
+				}
+
+				camera.lookAt(0, 20, 100);
+			}
+
+			function neoDoges(sec, scene) // 4 - 14
+			{
+
+
+		//фигури		
+				start = {"version":6,"data":[0,[0,-90,0],[-0.6,3.5,-2],[0,0,5],[11.9,0.4,10.2],[24.8],[-6,-6,-17.2],[-10.6,-0.6,7.1],[20],[6,6,-17.6],[102.4,-71.6,66.3],[89.7],[-15.5,0,0],[44.9,10],[-17.8,7,-0.5],[34.2],[15,0,0],[10,10]]};
+
+				//4-5
+				zero = {"version":6,"data":[0,[-174.5,-90,-128.7],[4.7,41.1,-5.2],[0,0,5],[11.9,0.2,-13.7],[52.2],[-6,-6,-18.7],[-19.1,-2.4,-32.7],[35.7],[6,6,-15.4],[116.2,7.4,-34],[67.3],[-15.5,0,0],[44.9,10],[-67.1,3.2,8.6],[65.4],[1,0,0],[-39.7,10]]};
+				if (sec > 4 && sec < 5){
+					neo.posture = Mannequin.blend(start, zero, (sec-4));
+				}
+
+				//5 - 6
+				one = {"version":6,"data":[-5,[-91.6,-90,-46.7],[-0.6,47.5,-7.8],[-2.7,-9.4,-1.5],[32.4,3.8,14.6],[85.3],[-16.9,-5.8,-18.2],[-19.1,-2.4,1.5],[64.8],[6,6,-15.4],[134,28.8,-36.4],[44.7],[-15.5,0,0],[44.9,10],[-60.6,12.8,41.7],[28.9],[1,0,0],[-39.7,10]]};
+				if (sec > 5 && sec < 6){
+					neo.posture = Mannequin.blend(zero, one, (sec-5));
+					neo.position.z -=   (sec-5)/2;
+				}
+
+				//6 - 10
+				two ={"version":6,"data":[-10,[-174.5,-90,-112.5],[7.2,-46.1,5.6],[-6.4,4.5,-9.7],[17.4,1.6,6.5],[85.1],[-8.3,-5.2,-13.6],[-21.7,-2.7,4.1],[78.7],[6,6,-11.9],[49.8,60.5,61.6],[31.7],[-15.5,0,0],[44.9,10],[-70.8,32,-21.6],[54.2],[-150.3,-54.5,-180],[-39.7,10]]};
+				if (sec > 6 && sec < 10){
+					neo.posture = Mannequin.blend(one, two, (sec-6)/4);
+					neo.position.z -=   (sec-6)/16;
+				}
+
+				//11 - 14
+				three ={"version":6,"data":[-15,[-170.5,-90,-82.7],[-4.2,25.9,-17.9],[0,0,4],[24,1.6,-7],[116.8],[-3.4,-7,-29.4],[-32.6,-5.1,-14.6],[120.9],[6,6,-40.1],[129.4,52.4,-11.4],[46.4],[-15.5,0,0],[44.9,10],[-94.5,29.6,-10.8],[52.4],[1,0,0],[-39.7,10]]};
+				if (sec > 10 && sec < 14){
+					neo.posture = Mannequin.blend(two, three, (sec-10)/4);
+				}
+
+
+		//камера
+
+				if (sec > 4 && sec < 14){
+					var time1 = (sec-5);
+					camera.position.set( 100 * sin(-time1 * 36)  , 10, -100*cos(time1 * 36)-100 );
+			    	camera.lookAt(0, 10, -100);
+				}
+			}
+
+
+				
+
+
+
+			function neoShotandStugguling(sec, scene) //14 - 20
+			{
+
+		//фигури		
+				start = three ={"version":6,"data":[-15,[-170.5,-90,-82.7],[-4.2,25.9,-17.9],[0,0,4],[24,1.6,-7],[116.8],[-3.4,-7,-29.4],[-32.6,-5.1,-14.6],[120.9],[6,6,-40.1],[129.4,52.4,-11.4],[46.4],[-15.5,0,0],[44.9,10],[-94.5,29.6,-10.8],[52.4],[1,0,0],[-39.7,10]]};;
+
+				//14-15
+				zero = {"version":6,"data":[-25.6,[-170.5,-80,-91.5],[-9.4,2.2,6.6],[1.3,-13.1,18.8],[19.2,-11.3,44.4],[68],[-3.4,-7,4.9],[-32.6,-5.1,11.8],[9.8],[6,6,-3.5],[26.3,16.5,-8.3],[101.4],[-15.5,0,0],[44.9,10],[-146.3,-70.4,-40.7],[72.9],[-179,61.9,180],[-39.7,10]]};
+				if (sec > 14 && sec < 15){
+					neo.posture = Mannequin.blend(start, zero, (sec-14));
+					
+				}
+
+				//15-16
+				one = {"version":6,"data":[-25.5,[-170.5,-80,-91.5],[-7.2,-16,6.9],[-4.2,-25.9,-6.6],[19.2,-11.3,58.1],[80.5],[-3.4,-7,4.9],[-32.6,-5.1,27.1],[43.7],[6,6,-3.5],[47.4,-52,83],[83],[-15.5,0,0],[44.9,10],[-90,-74.1,32.3],[72.9],[-179,61.9,180],[-39.7,10]]};
+				if (sec > 15 && sec < 16){
+					neo.posture = Mannequin.blend(zero, one, (sec-15));
+					
+				}
+
+				//16-20
+				two = {"version":6,"data":[-30,[-170.5,-80,-91.5],[-10.1,7.5,-58.6],[5.7,-12.5,13.7],[11.9,-11.3,35.8],[55.1],[-3.4,-7,4.9],[-24.8,-3.6,11.1],[10.4],[6,6,-3.5],[38.1,-8.6,-63.4],[92.5],[-48.9,31.5,-11.6],[-9.9,10],[-6.7,-20.9,-18.7],[52.6],[66.3,-60.8,26.7],[1,8.3]]};
+				if (sec > 16 && sec < 20){
+					neo.posture = Mannequin.blend(one, two, (sec-16)/4);
+				}
+
+		//камера		
+
+				//start
+				if(sec >14 && sec < 15){
+					camera.position.set( 0  , 30, -90 );
+			    	camera.lookAt(0, 0, -120);
+				}else if (sec >15 && sec < 20){
+					camera.position.set( -20  , 10, -90 );
+			    	camera.lookAt(0, -10, -120);
+				}
+
+			}
+			
+			function smithShoot2(sec, scene) //20 - 24
+			{
+				one = {"version":6,"data":[3.8,[0, 30,0],[0,0,-2],[0,0,5],[6,0,0],[0],[-6,-6,-0.6],[-6,0,0],[0],[6,6,-0.6],[7,-0.6,-5],[15],[-15,0,0],[10,10],[-7,0.6,-5],[15],[15,0,0],[10,10]]};
+				two = {"version":6,"data":[3.8,[0,30,0],[0,0,-2],[0,0,-9],[6,0,0],[0],[-6,-6,-0.6],[-6,0,0],[0],[6,6,-0.6],[7,-0.6,-5],[15],[-15,0,0],[10,10],[-7,0.6,57],[0],[15,0,0],[10,10]]};
+				smith.position.set(-30,0,-110);
+				if (sec > 20 && sec < 24){
+					smith.posture = Mannequin.blend(one, two, (sec-20)/4);
+				}
+
+			//камера		
+
+				//start
+				if(sec >21 && sec < 24){
+					camera.position.set( 0  , 0, -120 );
+			    	camera.lookAt(-30, 30, -110);
+				}
+				
+
+			}
+
+			function trinityShootsSmith(sec, scene)//24 - 30
+			{
+
+				//trinity gun
+				trinity.position.set(-30,0,-140);
+				tOne = {"version":6,"data":[3.8,[0,0,0],[0,0,-2],[0,0,5],[6,0,0],[0],[-6,-6,-0.6],[-6,0,0],[0],[6,6,-0.6],[7,-0.6,-5],[15],[-15,0,0],[10,10],[-7,0.6,-5],[15],[15,0,0],[10,10]]};
+				tTwo = {"version":6,"data":[3.8,[0,0,0],[-1,-26.7,-2.2],[12.9,-28.6,12.6],[6,56.5,2.8],[0],[-6,-6,14.2],[-6,-60,10.3],[5.1],[6,6,20.4],[9.3,9.2,-10.4],[15],[-15,0,0],[10,10],[2.6,-66.7,98.9],[21.8],[27.8,-0.5,-2.1],[98,129.1]]};
+				tThree = {"version":6,"data":[3.8,[0,0,0],[-1,-26.7,-2.2],[12.9,-28.6,12.6],[6,56.5,2.8],[0],[-6,-6,14.2],[-6,-60,10.3],[5.1],[6,6,20.4],[9.3,9.2,-10.4],[15],[-15,0,0],[10,10],[7.4,-62,125.9],[36.3],[30.4,-0.6,-63],[42.8,10]]};
+				//gun at face
+				if (sec > 25 && sec < 25.2){
+					trinity.posture = Mannequin.blend(tOne, tTwo, (sec-25)*5);
+				}
+				if (sec > 26 && sec < 28){
+					trinity.posture = Mannequin.blend(tTwo, tThree, (sec-26)/2);
+				}
+
+
+				//move head
+				//sStart = {"version":6,"data":[3.8,[0,30,0],[0,0,-2],[0,0,-9],[6,0,0],[0],[-6,-6,-0.6],[-6,0,0],[0],[6,6,-0.6],[7,-0.6,-5],[15],[-15,0,0],[10,10],[-7,0.6,57],[0],[15,0,0],[10,10]]};
+				//sMoveHead = {"version":6,"data":[3.8,[0,30,0],[0,0,-2],[3,18.1,-9.5],[6,0,0],[0],[-6,-6,-0.6],[-6,0,0],[0],[6,6,-0.6],[7,-0.6,-5],[15],[-15,0,0],[10,10],[-7,0.6,57],[0],[15,0,0],[10,10]]};
+				//if (sec > 25.2 && sec < 25.4){
+				//	smith.posture = Mannequin.blend(sStart, sMoveHead, (sec-25,2)*5);
+				//}
+
+				//falls
+				sFallsOne ={"version":6,"data":[2,[-19.9,90,1],[0,0,7.4],[0,0,-25.2],[6,0,20.3],[4.4],[-6,-6,28.3],[-6,0,19.6],[7.7],[6,6,30.2],[7,-0.6,35.4],[6.5],[-23.8,0,0],[0,42.1],[-7,0.6,31.8],[9.6],[25.2,0,0],[-0.1,18.8]]};
+				sFallsTwo ={"version":6,"data":[3,[-19.9,90,39.5],[0,0,17.6],[0,0,-28.8],[6,0,20.3],[4.4],[-6,-6,28.3],[-6,0,28.1],[18.3],[6,6,-7],[7,-0.6,26.1],[48.8],[-23.8,0,0],[0,42.1],[-7,0.6,4.3],[54.5],[25.2,0,0],[-0.1,18.8]]};
+				if (sec > 26 && sec < 30){
+					smith.position.set(-30,0,-110 + (sec-26)*10);
+					smith.posture = Mannequin.blend(sFallsOne, sFallsTwo, (sec-26)/4);
+				}
+
+			//камера		
+
+				//start
+				if(sec > 24 && sec < 25.4){
+					camera.position.set( 10  , 30, -110 );
+			    	camera.lookAt(-30, 30, -110);
+				}else {
+					camera.position.set( 100  , 20, -130 );
+			    	camera.lookAt(-30, 20, -110);
+				}
+				
+			}
+
+
+
+			var timeRegulator = 0;
+			function animate( t )
+			{
+				// в тази функция направете движението на
+				// човечетата (параметърът t е времето)
+				// Параметърът t е времето, измерено в десети от секундата.
+
+				var sec = t/100 - timeRegulator*30;
+				if(sec > 30) timeRegulator++;
+
+
+				if (sec > 0 && sec < 4) 			{ smithShoots(sec, scene); 				}
+				else if(sec > 4 && sec < 14)		{ neoDoges(sec, scene);    				}
+				else if(sec > 14 && sec < 20)		{ neoShotandStugguling(sec, scene); 	}
+				else if(sec > 20 && sec < 24)		{ smithShoot2(sec, scene)				}
+				else if(sec > 24 && sec < 30)		{ trinityShootsSmith(sec, scene)		}
+				
+
+				renderer.render( scene, camera );
+				
+			}
+
+
+
+		</script>
+	</body>
+</html>
