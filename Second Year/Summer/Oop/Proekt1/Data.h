@@ -32,19 +32,33 @@ public:
         this->year = year;
     }
     //sravnenie
-    bool operator<(const Date& other)const{
+    bool operator<=(const Date& other)const{
         if(year > other.year) return false;
         if(year < other.year) return true;
 
         if(month > other.month) return false;
         if(month < other.month) return true;
 
-        if(day < other.day) return true;
+        if(day <= other.day) return true;
 
         return false;
     }
-
     //bool operator>(const Date& other)const;
+    Date& operator=(const Date& other){
+        if(this != &other){
+            day = other.getDay();
+            month = other.getMonth();
+            year = other.getYear();
+        }
+        return *this;
+    }
+
+
+    void clear(){
+        day = 0;
+        month = 0;
+        year = 0;
+    }
 
     int getDay() const{return day;}
     int getMonth() const{return month;}
