@@ -1,6 +1,4 @@
 #include "Sklad.h"
-//todo when making the same file, delete old file
-
 
 Sklad::Sklad(){
 
@@ -37,6 +35,7 @@ void Sklad::inquiry(){
     //Справка за наличност
 
 } 
+
 void Sklad::clearSklad(){
     //Разчистване 
     /*
@@ -61,7 +60,6 @@ void Sklad::clearSklad(){
     fileExpired.inputNumber(currDate.getDay());
     niz = ".txt";
     fileExpired.inputString(niz);
-    cout << fileExpired << endl;
 
     //file for clearance
     ofstream out(fileExpired.getText(), std::ios::app);
@@ -86,26 +84,36 @@ void Sklad::clearSklad(){
 
         dynamicArray newLine;
         if(temp != '\n'){ //ako ima prazen red 
-            while( !in.eof() && temp != '\n' ){
+            while( !in.eof() && temp != '\n' ){ //extract one line
                 newLine.inputCharacter(temp);
                 in.get(temp);
             }
             
             //add into new file
-            if(  products[lineNum++].getExpirationDate() < currDate){
+            if(  products[lineNum].getExpirationDate() <= currDate){
+                
                 out << newLine << endl;
                 //delete from current file
+                //moje da iztriq celiq fail. i posle write product to file 
+
+                //delete that product from products
+                removeProduct(lineNum);
             }
-
-
+            lineNum++;
             newLine.clear();
         }
         if( in.eof() ) break;
     }
-
     in.close();
     out.close();
 
+    // abe da kajem
+    ofstream ofs;
+    ofs.open("inventory.txt", std::ofstream::out | std::ofstream::trunc);
+    for(int i = 0; i< num; i++){
+        writeProductToFile(products[i]);
+    }
+    ofs.close();
 
 } 
 
@@ -160,4 +168,11 @@ void Sklad::writeProductToFile(const Product & product){
 
 
     out.close();
+}
+
+void Sklad::removeProduct(int index){
+    //delete the product at products[index]
+    products[index] = products[num-1];
+    //products[num-1].clear();
+    num--;
 }
