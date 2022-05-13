@@ -1,7 +1,7 @@
 #include "Sklad.h"
 
-Sklad::Sklad(){
 
+Sklad::Sklad(){
     num = 0;
     products = new Product[1000];
     readProductFromFile();
@@ -17,7 +17,16 @@ void Sklad::print(){
 
 void Sklad::add(){
     //Добавяне на продукt
-    //cout << "in add" << endl;
+    /*
+        ако нов продукт е с различен срок на годност от вече 
+    съществуващ едноименен продукт, той да бъде поставен на 
+    различно място
+        ако имате достатъчно място, еднакви продукти с един и същи 
+    срок на годност да бъдат поставени на съседни места в склада 
+    */
+
+
+
     //input danni - ot usera
     products[num].addProduct();
 
@@ -31,8 +40,17 @@ void Sklad::remove(){
     //Изваждане на продукт
 
 } 
+
 void Sklad::inquiry(){
     //Справка за наличност
+    /*
+    Извежда справка за всички промени в наличността в период, въведен 
+    от потребителя, включително зареждания и извеждания на стоки.
+    */
+
+   //realno 6e ima nqkakuv fail i 6e go pro4etem ot x data do y data
+
+
 
 } 
 
@@ -49,35 +67,37 @@ void Sklad::clearSklad(){
     currDate.inputDate();
 
     //make the name of the file
-    //fileExpired = fileExpired + currDate.getYear() + '-' + currDate.getMonth() + '-' + currDate.getDay; // nqma koi da ti predifinira и + и = брат, няма време 5.12 е
-    dynamicArray fileExpired;
-    const char* niz = "cleanup-";
-    fileExpired.inputString(niz);
-    fileExpired.inputNumber(currDate.getYear());
-    fileExpired.inputCharacter('-');
-    fileExpired.inputNumber(currDate.getMonth());
-    fileExpired.inputCharacter('-');
-    fileExpired.inputNumber(currDate.getDay());
-    niz = ".txt";
-    fileExpired.inputString(niz);
+        //fileExpired = fileExpired + currDate.getYear() + '-' + currDate.getMonth() + '-' + currDate.getDay; // nqma koi da ti predifinira и + и = брат, няма време 5.12 е
+        dynamicArray fileExpired;
+        const char* niz = "cleanup-";
+        fileExpired.inputString(niz);
+        fileExpired.inputNumber(currDate.getYear());
+        fileExpired.inputCharacter('-');
+        fileExpired.inputNumber(currDate.getMonth());
+        fileExpired.inputCharacter('-');
+        fileExpired.inputNumber(currDate.getDay());
+        niz = ".txt";
+        fileExpired.inputString(niz);
+
 
     //file for clearance
-    ofstream out(fileExpired.getText(), std::ios::app);
-    if (!out) {
-        std::cout << "Couldn't open file!" << std::endl;
-    }
+        ofstream out(fileExpired.getText(), std::ios::app);
+        if (!out) {
+            std::cout << "Couldn't open file!" << std::endl;
+        }
 
 
     //file inventory
-    ifstream in("inventory.txt");
-    if (!in) {
-        cout << "Couldn't open file!" << endl;
-    }
+        ifstream in("inventory.txt");
+        if (!in) {
+            cout << "Couldn't open file!" << endl;
+        }
+
 
     int i = 0;
-    int lineNum= 0;
+    int lineNum = 0;
     while (true) {
-        
+
         char temp;
         in.get(temp);
         if( in.eof() ) break;
@@ -89,23 +109,30 @@ void Sklad::clearSklad(){
                 in.get(temp);
             }
             
-            //add into new file
+
+            //expirie date < current date
             if(  products[lineNum].getExpirationDate() <= currDate){
-                
+                //add into expired file file
                 out << newLine << endl;
                 //delete from current file
                 //moje da iztriq celiq fail. i posle write product to file 
 
                 //delete that product from products
                 removeProduct(lineNum);
+               
             }
             lineNum++;
             newLine.clear();
         }
+
+        
+
         if( in.eof() ) break;
     }
     in.close();
     out.close();
+
+    
 
     // abe da kajem
     ofstream ofs;
@@ -114,6 +141,7 @@ void Sklad::clearSklad(){
         writeProductToFile(products[i]);
     }
     ofs.close();
+
 
 } 
 
@@ -127,10 +155,9 @@ void Sklad::readProductFromFile(){
         cout << "Couldn't open file!" << endl;
     }
 
-    int i =0;
+    int i = 0;
     while (true) {
         
-       
         char temp;
         in.get(temp);
         if( in.eof() ) break;
@@ -171,8 +198,10 @@ void Sklad::writeProductToFile(const Product & product){
 }
 
 void Sklad::removeProduct(int index){
+
     //delete the product at products[index]
-    products[index] = products[num-1];
+    products[index] = products[num-1]; 
     //products[num-1].clear();
     num--;
+
 }
