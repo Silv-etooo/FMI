@@ -2,7 +2,11 @@
 
 
 
-
+void Product::clear(){
+    name.clear();
+    //expiration_Date.clear();
+    //quantity = 0;
+}
 
 
 
@@ -20,9 +24,11 @@ void Product::addProduct(){
     cout << "   Add expiration date: ";
     expiration_Date.inputDate();
 
-    //quantity
+    //4. quantity
     cout << "   Add quantity: ";
     cin >> quantity;
+
+    
 
 
 }
@@ -79,4 +85,17 @@ void Product::addProduct(const dynamicArray& newLine){
         
 
     //while( (newLine.getText())[i] != '\0' ){ //minava prez niza
+}
+
+
+Product& Product::operator=(const Product& other){
+    if(this != &other){
+        //1. name
+        name = other.getDynamicName();
+        //2. expiration data
+        expiration_Date = other.getExpirationDate();
+        //4. quantity
+        quantity = other.getQuantity();
+    }
+    return *this;
 }
