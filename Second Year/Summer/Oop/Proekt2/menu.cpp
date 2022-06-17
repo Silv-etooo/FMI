@@ -1,0 +1,189 @@
+#include "menu.h"
+//todo const
+//magic numbers
+
+Menu::Menu(){
+    cout << "opaa kak e nastroenieto" << endl;
+    startMenu();
+}
+
+
+void Menu::startMenu(){
+        
+    /*
+    get input
+    split input = firstword + rest of input
+        int command = turn to int (firstword)
+        dynamicArray paramenters = rest of input
+    switch (command){}
+    */
+
+    int command = 0;
+    dynamicArray input, parameters;
+    input.inputArray();
+    command = processInput(input, parameters);
+
+    
+    while(command != 11){
+
+        switch(command){
+
+            case 1: 
+            cout << command << endl;
+            open(parameters); //само 1 път брат ц
+            break; 
+
+            case 2: close();
+            cout << command << endl;
+            break;
+
+            case 3: save();
+            cout << command << endl;
+            break;
+
+            case 4: saveas();
+            cout << command << endl;
+            break;
+            
+            case 5: help();
+            cout << command << endl;
+            break;
+            
+            case 6: print();
+            cout << command << endl;
+            break;
+
+            case 7: create(parameters);
+            cout << command << endl;
+            break;
+
+            case 8: erase(parameters);
+            cout << command << endl;
+            break;
+
+            case 9: translate(parameters);
+            cout << command << endl;
+            break;
+
+            case 10: within(parameters);
+            cout << command << endl;
+            break;
+
+            default: 
+                cout << "just no" << endl;
+            break;
+
+        }
+        input.clear();
+        input.inputArray();
+        command = processInput(input, parameters);
+            
+    
+    }
+
+    cout << endl;
+    cout << "Exit" << endl;
+    cout << "Have a nice day :)" << endl;
+
+}
+
+
+void Menu::open(dynamicArray& parameters){
+    figures.open(parameters); 
+    cout << endl;
+}
+
+void Menu::close(){
+    figures.close(); 
+    cout << endl;
+}
+
+void Menu::save(){
+    figures.save(); 
+    cout << endl;
+}
+
+void Menu::saveas(){
+    figures.saveas(); 
+    cout << endl;
+}
+           
+void Menu::help(){
+    cout << "open       - open <filename.svg>" << endl;
+    cout << "close " << endl;
+    cout << "save " << endl;
+    cout << "saveas     - saveas <filename.svg>" << endl;
+    cout << "help       - this" << endl;
+    cout << "print" << endl;
+    cout << "create     - create <type of figure> <parameters>" << endl;
+    cout << "erase      - erase <index>  " << endl;
+    cout << "translate  - translate <coordinates>" << endl;
+    cout << "within     - within <type of figure> <parameters>" << endl;
+    cout << "exit " << endl;
+}
+
+void Menu::print(){
+    figures.print(); 
+    cout << endl;
+}
+
+void Menu::create(dynamicArray& parameters){
+    figures.create(parameters);
+    cout << endl;
+}
+
+void Menu::erase(dynamicArray& parameters){
+    figures.erase(parameters);
+    cout << endl;
+}
+
+void Menu::translate(dynamicArray& parameters){
+    figures.translate(parameters);
+    cout << endl;
+}
+
+void Menu::within(dynamicArray& parameters){
+    figures.within(parameters);
+    cout << endl;
+}
+
+
+//private
+int Menu::processInput(dynamicArray& input, dynamicArray& parameters){
+    //int command = turn to int (first word ot inputstring)
+    //dynamicArray paramenters = sledpurva duma (inputString)
+
+
+    dynamicArray firstWord;
+    int i = 0;
+    while(input[i] != ' ' && input[i] != '\0'){
+        firstWord.inputCharacter(input[i]);
+        i++;
+    }
+
+   
+    if(firstWord == "close") return 2;
+    if(firstWord == "save") return 3;
+    if(firstWord == "saveas") return 4;
+    if(firstWord == "help") return 5;
+    if(firstWord == "print") return 6;
+
+    
+    parameters.clear();
+    i++; //za space-a
+    while(input[i] != '\0'){
+        parameters.inputCharacter(input[i]);
+        i++;
+    }
+    parameters[i] == '\0';
+
+     if(firstWord == "open") return 1;
+    if(firstWord == "create") return 7;
+    if(firstWord == "erase") return 8;
+    if(firstWord == "translate") return 9;
+    if(firstWord == "within") return 10;
+    if(firstWord == "exit") return 11;
+
+    return 12;
+
+}
