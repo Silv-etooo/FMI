@@ -28,45 +28,34 @@ void Menu::startMenu(){
 
         switch(command){
 
-            case 1: 
-            cout << command << endl;
-            open(parameters); //само 1 път брат ц
+            case 1: open(parameters); //само 1 път брат ц
             break; 
 
             case 2: close();
-            cout << command << endl;
             break;
 
             case 3: save();
-            cout << command << endl;
             break;
 
-            case 4: saveas();
-            cout << command << endl;
+            case 4: saveas(parameters);
             break;
             
             case 5: help();
-            cout << command << endl;
             break;
             
             case 6: print();
-            cout << command << endl;
             break;
 
             case 7: create(parameters);
-            cout << command << endl;
             break;
 
             case 8: erase(parameters);
-            cout << command << endl;
             break;
 
             case 9: translate(parameters);
-            cout << command << endl;
             break;
 
             case 10: within(parameters);
-            cout << command << endl;
             break;
 
             default: 
@@ -103,8 +92,8 @@ void Menu::save(){
     cout << endl;
 }
 
-void Menu::saveas(){
-    figures.saveas(); 
+void Menu::saveas(dynamicArray& parameters){
+    figures.saveas( parameters); 
     cout << endl;
 }
            
@@ -164,7 +153,7 @@ int Menu::processInput(dynamicArray& input, dynamicArray& parameters){
    
     if(firstWord == "close") return 2;
     if(firstWord == "save") return 3;
-    if(firstWord == "saveas") return 4;
+    
     if(firstWord == "help") return 5;
     if(firstWord == "print") return 6;
 
@@ -177,7 +166,8 @@ int Menu::processInput(dynamicArray& input, dynamicArray& parameters){
     }
     parameters[i] == '\0';
 
-     if(firstWord == "open") return 1;
+    if(firstWord == "open") return 1;
+    if(firstWord == "saveas") return 4;
     if(firstWord == "create") return 7;
     if(firstWord == "erase") return 8;
     if(firstWord == "translate") return 9;
