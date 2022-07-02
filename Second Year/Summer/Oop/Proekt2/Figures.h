@@ -16,6 +16,7 @@ public:
         num = 0;
     }
     ~Figures(){
+        num= 0 ;
        clear();
     }
 
@@ -126,8 +127,39 @@ public:
     }
 
     
-    //[]
-    //cout
+
+
+    Figures(const Figures& other){
+
+        this->num = other.num;
+        this->filename = other.filename;
+        
+        for(int i = 0; i < other.num; i++){
+
+            this->figures[i] = other.figures[i]->clone();
+        }
+        
+
+    }
+
+    Figures& operator=(const Figures& other){
+        if(this != &other){
+            clear();
+            
+            this->num = other.num;
+            this->filename = other.filename;
+
+            for(int i = 0; i < other.num; i++){
+
+                this->figures[i] = other.figures[i]->clone();
+            }
+            
+            
+        }
+        return *this;
+    }
+
+
 
 private:
     Figure *figures[100];

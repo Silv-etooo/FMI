@@ -101,6 +101,7 @@ void Figures::addFigure(dynamicArray& niz){
 
     if(type == "line"){
         figures[num++] = new Line(niz, i);
+       // figures[num++] = Lineclone();
     }
     else if(type == "rect" || type == "rectangle"){
         figures[num++] = new Rect(niz, i);

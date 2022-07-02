@@ -19,8 +19,8 @@ void Menu::startMenu(){
     */
 
     int command = 0;
-    dynamicArray input, parameters;
-    input.inputArray();
+    dynamicArray<char> input, parameters;
+    input.input();
     command = processInput(input, parameters);
 
     
@@ -64,7 +64,7 @@ void Menu::startMenu(){
 
         }
         input.clear();
-        input.inputArray();
+        input.input();
         command = processInput(input, parameters);
             
     
@@ -77,7 +77,7 @@ void Menu::startMenu(){
 }
 
 
-void Menu::open(dynamicArray& parameters){
+void Menu::open(dynamicArray<char>& parameters){
     figures.open(parameters); 
     cout << endl;
 }
@@ -92,7 +92,7 @@ void Menu::save(){
     cout << endl;
 }
 
-void Menu::saveas(dynamicArray& parameters){
+void Menu::saveas(dynamicArray<char>& parameters){
     figures.saveas( parameters); 
     cout << endl;
 }
@@ -116,37 +116,37 @@ void Menu::print(){
     cout << endl;
 }
 
-void Menu::create(dynamicArray& parameters){
+void Menu::create(dynamicArray<char>& parameters){
     figures.create(parameters);
     cout << endl;
 }
 
-void Menu::erase(dynamicArray& parameters){
+void Menu::erase(dynamicArray<char>& parameters){
     figures.erase(parameters);
     cout << endl;
 }
 
-void Menu::translate(dynamicArray& parameters){
+void Menu::translate(dynamicArray<char>& parameters){
     figures.translate(parameters);
     cout << endl;
 }
 
-void Menu::within(dynamicArray& parameters){
+void Menu::within(dynamicArray<char>& parameters){
     figures.within(parameters);
     cout << endl;
 }
 
 
 //private
-int Menu::processInput(dynamicArray& input, dynamicArray& parameters){
+int Menu::processInput(dynamicArray<char>& input, dynamicArray<char>& parameters){
     //int command = turn to int (first word ot inputstring)
     //dynamicArray paramenters = sledpurva duma (inputString)
 
 
-    dynamicArray firstWord;
+    dynamicArray<char> firstWord;
     int i = 0;
-    while(input[i] != ' ' && input[i] != '\0'){
-        firstWord.inputCharacter(input[i]);
+    while(input[i] != ' ' && i <= input.getIndex()){
+        firstWord.pushBack(input[i]);
         i++;
     }
 
@@ -160,8 +160,8 @@ int Menu::processInput(dynamicArray& input, dynamicArray& parameters){
     
     parameters.clear();
     i++; //za space-a
-    while(input[i] != '\0'){
-        parameters.inputCharacter(input[i]);
+    while(i <= input.getIndex()){
+        parameters.pushBack(input[i]);
         i++;
     }
     parameters[i] == '\0';
