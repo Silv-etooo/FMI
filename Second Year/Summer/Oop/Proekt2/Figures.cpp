@@ -6,6 +6,8 @@ void Figures::open(dynamicArray& filename){
     //2. get every line //at the exact moment that i wrote it, i realisied that every command starts with < and ends with /> (and not that every command is on a new line but uhhh. no i am not gonna change it :)) 
     //3. import shape
 
+    this->filename = filename;
+    
     //1
     ifstream in(filename.getText());
     if (!in) {
@@ -83,9 +85,9 @@ void Figures::formatNewLineFigure(dynamicArray& newLine){
 
 void Figures::addFigure(dynamicArray& niz){
     //first is fill, then stroke
-    //line 0 0 3000 3000 green
-    //rect 5 5 1000.5 10 red green
-    //circle 5 5 100 blue
+    //<line >0 0 3000 3000 green
+    //<rect >5 5 1000.5 10 red green
+    //<circle >5 5 100 blue
 
     
     dynamicArray type;
@@ -95,20 +97,16 @@ void Figures::addFigure(dynamicArray& niz){
         i++;
     }
     i++; //for ' '
+    //cout << type << endl;
 
     if(type == "line"){
-        
-        Line line(niz, i);
-        line.print();
-        figures[num++] = &line;
+        figures[num++] = new Line(niz, i);
     }
     else if(type == "rect" || type == "rectangle"){
-        Rect rect(niz, i);
-        //figures[num++] = &rect;
+        figures[num++] = new Rect(niz, i);
     }
     else if(type == "circle"){
-        Circle circle(niz, i);
-        //figures[num++] = &circle;
+        figures[num++] = new Circle(niz, i);
     }
 
 
