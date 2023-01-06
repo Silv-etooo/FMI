@@ -1,6 +1,6 @@
 # ФМИ (Sofia University - FMI)
 
-Third Year
+Third Year   
 Logic Programming
 
 Second Year   
