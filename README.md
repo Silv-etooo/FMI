@@ -1,10 +1,12 @@
 # ФМИ (Sofia University - FMI)
 
+Third Year
+Logic Programming
+
 Second Year   
-Winter    
 Functional Programming
 
 
 First Year    
-Обектно ориантирано програмиране (Object oriented prigramming)  
-Увод в програмирането (Intro to programming)  
+Object oriented prigramming
+Intro to programming
