@@ -8,5 +8,5 @@ Functional Programming
 
 
 First Year    
-Object oriented prigramming
+Object oriented prigramming    
 Intro to programming
